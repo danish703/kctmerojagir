@@ -11,27 +11,10 @@
                 <h3 class="panel-title">Signup</h3>
               </div>
               <div class="panel-body">
+                    {% include 'component/message.html' %}
                 <form method="post">
-                    <div class="input-group">
-                      <span class="input-group-addon" id="basic-addon1">username</span>
-                      <input type="text" class="form-control" name="useranme" placeholder="Username" aria-describedby="basic-addon1">
-                    </div>
-                    <br/>
-                    <div class="input-group">
-                      <span class="input-group-addon">email</span>
-                      <input type="email" class="form-control" name="email" placeholder="email" aria-describedby="basic-addon1">
-                    </div>
-                      <br/>
-                    <div class="input-group">
-                      <span class="input-group-addon">Password</span>
-                      <input type="password" class="form-control" name="pass1" placeholder="password" aria-describedby="basic-addon1">
-                    </div>
-                     <br/>
-                    <div class="input-group">
-                      <span class="input-group-addon">Password Confirmation</span>
-                      <input type="password" class="form-control" name="pass2" placeholder="password confirmation" aria-describedby="basic-addon1">
-                    </div>
-                     <br/>
+                    {{form}}
+                   <br/>
                     {% csrf_token %}
                     <button type="submit" style="float:right;" class="btn btn-success">Signup</button>
                 </form>

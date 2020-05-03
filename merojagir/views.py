@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
+from django.contrib import messages
+from .forms import CustomUserCreationForm
 def signin(request):
     if request.method=='GET':
         return render(request,'login.html')
@@ -13,26 +15,27 @@ def signin(request):
             login(request,user)
             return redirect('dashboard')
         else:
-            print("useranme and paass does not match")
+            messages.error(request,"username and password does not match")
             return redirect('signin')
 
 
 def signup(request):
     if request.method=='GET':
-        return render(request,'signup.html')
+        context= {
+            'form':CustomUserCreationForm()
+        }
+        return render(request,'signup.html',context)
     else:
-        u = request.POST['useranme']
-        e = request.POST['email']
-        p1 = request.POST['pass1']
-        p2 = request.POST['pass2']
-        if p1==p2:
-           u = User(username=u,email=e)
-           u.set_password(p1)
-           u.save()
-           return redirect('signin')
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"successfully account created")
         else:
-            print("signup vayena error aayo")
-            return redirect('signup')
+            context={
+                'form':form
+            }
+            return render(request,'signup.html',context)
+
 
 
 @login_required(login_url='signin')
