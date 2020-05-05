@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from .helpmethod import isemployee
 def signin(request):
     if request.method=='GET':
         return render(request,'login.html')
@@ -13,7 +14,9 @@ def signin(request):
         user = authenticate(username=u,password=p)
         if user is not None:
             login(request,user)
-            return redirect('dashboard')
+            if(isemployee(request.user)):
+                return redirect('dashboard')
+            return redirect('who')
         else:
             messages.error(request,"username and password does not match")
             return redirect('signin')
@@ -30,6 +33,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             messages.success(request,"successfully account created")
+            return  redirect('signin')
         else:
             context={
                 'form':form
@@ -41,3 +45,15 @@ def signup(request):
 @login_required(login_url='signin')
 def dashbaord(request):
     return render(request,'dashboard.html')
+
+@login_required(login_url='signin')
+def who(request):
+    if(isemployee(request.user)):
+        return redirect('dashboard')
+    return render(request,'who.html')
+
+def signout(request):
+    logout(request)
+    return redirect('signin')
+
+
