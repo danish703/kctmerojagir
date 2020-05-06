@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm
-from .helpmethod import isemployee
+from .helpmethod import isemployee,isCompany
 def signin(request):
     if request.method=='GET':
         return render(request,'login.html')
@@ -15,6 +15,8 @@ def signin(request):
         if user is not None:
             login(request,user)
             if(isemployee(request.user)):
+                return redirect('emp_dashbaord')
+            if(isCompany(request.user)):
                 return redirect('dashboard')
             return redirect('who')
         else:
@@ -42,13 +44,12 @@ def signup(request):
 
 
 
-@login_required(login_url='signin')
-def dashbaord(request):
-    return render(request,'dashboard.html')
 
 @login_required(login_url='signin')
 def who(request):
     if(isemployee(request.user)):
+        return redirect('emp_dashbaord')
+    if(isCompany(request.user)):
         return redirect('dashboard')
     return render(request,'who.html')
 
