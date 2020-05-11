@@ -1,0 +1,30 @@
+{% extends 'master/master.html' %}
+
+{% block title %} Vacancy list {% endblock %}
+{% block content %}
+ <div class="container">
+      <div class="row">
+         <div class="col-md-7 col-md-offset-3">
+            <h4>All Vacancy</h4>
+             <table class="table">
+                 <thead>
+                   <th>Title </th>
+                    <th>Date</th>
+                 <th>Action</th>
+                 </thead>
+                 <tbody>
+                 {% for v in vacancy%}
+                  <tr>
+                      <td><a href="#"> {{v.title}}</a></td>
+                      <td>{{v.last_apply_date}}</td>
+                      <td><a href="">Edit</a> | <a href="#">Del</a> </td>
+                  </tr>
+                 {% endfor %}
+
+                 </tbody>
+             </table>
+         </div>
+      </div>
+ </div>
+
+{% endblock %}

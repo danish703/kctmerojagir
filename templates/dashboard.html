@@ -1,8 +1,42 @@
 {% extends 'master/master.html' %}
-
+ {% load static %}
 {% block title %} Company Dashboard {% endblock %}
 
 {% block content %}
 
- <h3>Company dashbaord</h3>
+ <div class="container">
+      <div class="row">
+          <div class="col-md-10">
+              <div class="row">
+                  <div class="col-md-4">
+                      <div class="row">
+                          {% if company.profile_image %}
+                        <img src="{{MEDIA_URL}}{{company.profile_image.url}}" class="me">
+                      {% else %}
+                         <img src="{% static 'me.jpg' %}" class="me">
+                      {% endif %}
+                      </div>
+
+                      <div class="row">
+                          <h4 style="float:right;">{{company.company_name}}</h4>
+                          <br/>
+                          <h6 style="float:right;"><span>{{company.adress}}</span></h6>
+                      </div>
+
+                      <a href="{% url 'postjob' %}" class="btn btn-primary">Post Job</a>
+                      <br/>
+                      <br/>
+                      <a href="{% url 'vacancylist' %}" class="btn btn-success">All Vacancy</a>
+                  </div>
+                  <div class="col-md-8">
+                      <a href="{% url 'edit_company' %}" style="float:right;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
+                      <p>
+                          {{company.about}}
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
 {% endblock %}
