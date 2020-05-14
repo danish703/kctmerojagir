@@ -5,6 +5,26 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm
 from .helpmethod import isemployee,isCompany
+from general.models import Slider
+
+def home(request):
+    s = Slider.objects.all()
+    template_name ='home.html'
+    context = {
+        'first':s[0],
+        'otherslider':s[1:],
+        'indicator':list(range(1,len(s[1:])+1))
+    }
+    return render(request,template_name,context)
+
+
+
+@login_required(login_url='signin')
+def dashboard(request):
+    if(isemployee(request.user)):
+        return redirect('emp_dashbaord')
+    else:
+        return redirect('dashboard')
 def signin(request):
     if request.method=='GET':
         return render(request,'login.html')

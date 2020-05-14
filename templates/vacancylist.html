@@ -17,7 +17,7 @@
                   <tr>
                       <td><a href="#"> {{v.title}}</a></td>
                       <td>{{v.last_apply_date}}</td>
-                      <td><a href="">Edit</a> | <a href="#">Del</a> </td>
+                      <td><a href="{% url 'editjob' v.id %}">Edit</a> | <a href="{% url 'removejob' v.id %}">Del</a> </td>
                   </tr>
                  {% endfor %}
 
@@ -26,5 +26,6 @@
          </div>
       </div>
  </div>
+
 
 {% endblock %}

@@ -12,6 +12,7 @@ def dashbaord(request):
     }
     return render(request,'dashboard.html',context)
 
+@login_required(login_url='signin')
 def edit_company(request):
     cmp = getCurrentlyLoginCompany(request.user)
     form = CreateCompany(request.POST or None,request.FILES or None,instance=cmp)
@@ -23,6 +24,7 @@ def edit_company(request):
     }
     return render(request,'edit_company.html',context)
 
+@login_required(login_url='signin')
 def register(request):
     template_name='create_company.html'
     if request.method=='GET':
@@ -42,7 +44,7 @@ def register(request):
 
 
 
-
+@login_required(login_url='signin')
 def createjob(request):
     template_name = 'create_job.html'
     if request.method=='GET':
@@ -63,6 +65,7 @@ def createjob(request):
             }
             return render(request, template_name, context)
 
+@login_required(login_url='signin')
 def vacancylist(request):
     template_name='vacancylist.html'
     vacancy = Job.objects.filter(company=getCurrentlyLoginCompany(request.user)).order_by('last_apply_date')
@@ -71,6 +74,22 @@ def vacancylist(request):
     }
     return render(request,template_name,context)
 
+@login_required(login_url='signin')
+def editjob(request,id):
+    template_name='edit_job.html'
+    form =JobForm(request.POST or None,request.FILES or None,instance=Job.objects.get(id=id))
+    if(form.is_valid()):
+        form.save()
+        return redirect('vacancylist')
+    context = {
+        'form': form
+    }
+    return render(request,template_name,context)
+
+def removejob(request,id):
+    j = Job.objects.get(id=id)
+    j.delete()
+    return redirect('vacancylist')
 
 def getCurrentlyLoginCompany(user):
     return Company.objects.get(user=user)
